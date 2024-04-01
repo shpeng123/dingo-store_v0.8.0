@@ -1,0 +1,45 @@
+cluster:
+  name: dingodb
+  instance_id: $INSTANCE_ID$
+  keyring: TO_BE_CONTINUED
+server:
+  host: $SERVER_HOST$
+  port: $SERVER_PORT$
+  # worker_thread_num: 128 # must >4, worker_thread_num priority worker_thread_ratio
+  # worker_thread_ratio: 1.0 # cpu core * ratio
+  brpc_common_worker_num: 32 # must > 4, the totol bthread_concurrency of brpc is sum of all other worker_num + brpc_common_worker_num
+  coordinator_service_worker_num: 32 # must < server.worker_thread_num
+  coordinator_service_worker_max_pending_num: 1024 # 0 is unlimited
+  meta_service_worker_num: 32 # must < server.worker_thread_num
+  meta_service_worker_max_pending_num: 1024 # 0 is unlimited
+  version_service_worker_num: 32 # must < server.worker_thread_num
+  version_service_worker_max_pending_num: 1024 # 0 is unlimited
+coordinator:
+  peers: $COORDINATOR_RAFT_PEERS$
+  push_interval_s: 1
+  update_state_interval_s: 10
+  task_list_interval_s: 1
+  calc_metrics_interval_s: 60
+  recycle_orphan_interval_s: 60
+  remove_watch_interval_s: 10
+  meta_watch_clean_interval_s: 60
+  lease_interval_s: 1
+  auto_compaction: true
+  compaction_interval_s: 300
+  compaction_retention_rev_count: 1000
+raft:
+  host: $RAFT_HOST$
+  port: $RAFT_PORT$
+  path: $BASE_PATH$/data/raft_data
+  log_path: $BASE_PATH$/data/raft_log
+  election_timeout_s: 2
+  snapshot_interval_s: 300
+  segmentlog_max_segment_size: 33554432 # 32MB
+log:
+  level: INFO
+  path: $BASE_PATH$/log
+store:
+  path: $BASE_PATH$/data/db
+  background_thread_num: 16 # background_thread_num priority background_thread_ratio
+  # background_thread_ratio: 0.5 # cpu core * ratio
+  stats_dump_period_s: 120
